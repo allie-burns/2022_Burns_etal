@@ -36,9 +36,6 @@ my $Usage = &get_usage;
 #define default path to samtools binary.
 my $samtools_path = "/home/services/Genpathway/Systems/samtools-0.1.19";
 
-##"/ssoft/spack/humagne/v1/opt/spack/linux-rhel7-x86_S6g1_Mellanox/gcc-7.4.0/samtools-1.9-armssgpe75ofxslcuzcaobarwqgtt7o2/bin/samtools";
-
-
 # Initialize command line options
 my $in_dir = ".";
 my $out_dir = ".";
