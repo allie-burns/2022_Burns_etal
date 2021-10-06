@@ -1,18 +1,24 @@
-## Load required libraries
+## #############################################################################
+## Date:        April 2021
+## Author:      Allison M. Burns
+## Filename:    /2_snRNA-seq/3_DEanalysis.R
+## Project:     Epigenetic Priming - snRNA-seq analysis
+## Description: Differential expression analysis between HDACi and Veh treated
+##              samples for each cell-type in the Seurat object. This outputs the
+##              log2FC and p-value for all expressed genes (in > 10% of cells)
+##              within each cell type. 
+## #############################################################################
+
 library(Seurat)
 
 ## Load Data
-seu <- readRDS("./2_SeuratPub/data/SeuratObject.rds")
+seu <- readRDS("./files/SeuratObject.rds")
 DefaultAssay(seu) <- "RNA"
-
-## Load Colors
-cols <- pal_jco()(10)
-names(cols) <- levels(unique(Idents(seu)))
 
 ################################################################################
 ## Run DE for each cell type
 ################################################################################
-## Run wilcox DE analysis for each cluster in each seurat object
+## Run logistic regression framework DE analysis for each cluster 
 clusters <- levels(Idents(seu))
 
 DEbyCluster <- function(clusters,seuData) {
@@ -30,4 +36,4 @@ DEbyCluster <- function(clusters,seuData) {
 
 lrt <- lapply(clusters,DEbyCluster,seu)
 names(lrt)  <- clusters
-saveRDS(lrt, "./2_seuratPub/data/DE_logfc0_LR.rds")
+saveRDS(lrt, "./files/DE_logfc0_LR.rds")

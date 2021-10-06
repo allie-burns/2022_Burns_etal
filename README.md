@@ -19,5 +19,17 @@ We used bulk RNA-sequencing in the hippocampus and the striatum to show that a s
 
 
 ### snRNA-seq analysis
+We used snRNA-sequencing in the hippocampus to show that systemic HDACi treatment alters differential transcriptional programs in the different cell types after treatment paired with contextual fear conditioning. Code should be run in the following order:
+
+- `1_runAlignment.sh`: align fastq files to mouse genome (mm10-premrna; created with `cellranger mkfastq`) using CellRanger.
+
+- `2_SeuratAnalysis.R`: 
+
+- `3_DEanalysis.R`:
+
+- `4_Augur_cellComposition.R`:
+
+- `5_DEG_removal_test.R`: 
+
 
 ### ChIP-seq analysis

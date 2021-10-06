@@ -1,3 +1,17 @@
+## #############################################################################
+## Date:        April 2021
+## Author:      Allison M. Burns
+## Filename:    /2_snRNA-seq/4_Augur_cellComposition.R
+## Project:     Epigenetic Priming - snRNA-seq analysis
+## Description: Code for running Augur and the permutation test.
+##              Augur (prioritization of a population’s responsiveness to
+##              experimental perturbation) tests to determine the extent to
+##              which HDACi induces differential expression in different cell
+##              types, without being biased by numbers of nuclei.
+##              And the permutation test determines HDACi alters the numbers
+##              of nuclei within a give cell-type.
+## #############################################################################
+
 library(Seurat)
 library(Augur)
 library(scProportionTest)
@@ -7,13 +21,13 @@ library(ggplot2)
 ## Run Augur
 ################################################################################
 ## Load datasets
-seu <- readRDS("./2_SeuratPub/data/SeuratObject.rds")
+seu <- readRDS("./files/SeuratObject.rds")
 DefaultAssay(seu)  <-  "RNA"
 unique(Idents(seu))
 
 ## Run Augur on assigned identities
 aug <-  calculate_auc(seu, label_col = "drug",cell_type_col = "cluster")
-saveRDS(aug, "./2_SeuratPub/data/Augur_seurat_clusters.rds")
+saveRDS(aug, "./files/Augur_seurat_clusters.rds")
 
 ## Internal augur lollipops
 plot_lollipop(aug) +

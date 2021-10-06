@@ -1,26 +1,33 @@
-## Load required libraries
+## #############################################################################
+## Date:        April 2021
+## Author:      Allison M. Burns
+## Filename:    /2_snRNA-seq/5_DEG_removal_test.R
+## Project:     Epigenetic Priming - snRNA-seq analysis
+## Description: This is the code for Figures 3E-F and Supplemental Figure 8.
+##              Here, we remove up and down-regulated genes in each cluster (plus
+##              a random subset to test reunification) to determine whether or
+##              not the DEGs are driving the DG specific split in the UMAPs.
+## #############################################################################
+
 library(Seurat)
 library(ggsci)
 library(ggplot2)
 library(ggrastr)
 
 ## Load Data
-seu <- readRDS("./2_SeuratPub/data/SeuratObject.rds")
+seu <- readRDS("./files/SeuratObject.rds")
 DefaultAssay(seu) <- "RNA"
-lrt <- readRDS("./2_seuratPub/data/DE_logfc0_LR.rds")
-
-## Load Colors
-cols <- pal_jco()(10)
-names(cols) <- levels(unique(Idents(seu)))
-
-## Define Differential Enrichment
-fc <- 1
-pval <- 0.05
+lrt <- readRDS("./files/DE_logfc0_LR.rds")
 
 ################################################################################
 ##  Remove gene groups
 ################################################################################
-set.seed(775)
+## Define Differential Enrichment
+fc <- 1
+pval <- 0.05
+
+## Get up and down-regulated genes in each cell-type (+ a list of random genes
+## to see if this also affects unification
 allGenes <- rownames(seu@assays$RNA@data)
 up <- lapply(lrt, function(x) {x[x$p_val_adj <= pval & x$avg_log2FC >= fc,]})
 dw <- lapply(lrt, function(x) {x[x$p_val_adj <= pval & x$avg_log2FC <= -fc,]})
@@ -45,9 +52,8 @@ runUMAPremoval <- function(i,geneLists,seuData,fl) {
     seuData <- RunUMAP(object = seuData, dims = 1:50,verbose=FALSE)
     
     ## Make Figures
-    cols <- c("#8B829C", "#5A486F","#99CCBA", "#689D6C") ## telegraph
+    cols <- c("#8B829C", "#5A486F","#99CCBA", "#689D6C")
     
-    ## Make Figures
     dp1 <- rasterize(DimPlot(object = seuData,
                              reduction = "umap",
                              group.by = "drug",
@@ -66,7 +72,7 @@ runUMAPremoval <- function(i,geneLists,seuData,fl) {
     
     dp1$layers[[2]] <- dp2$layers[[2]]
     
-    pdf(paste("./2_SeuratPub/figures/DivideConquer/",fl,"/",listName,".pdf",sep = ""),
+    pdf(paste("./files/DivideConquer_",fl,"/",listName,".pdf",sep = ""),
         width = 5, height = 5)
     print(
         dp1 +
@@ -75,7 +81,6 @@ runUMAPremoval <- function(i,geneLists,seuData,fl) {
         NoLegend() +
         theme (plot.title = element_text(hjust = 0.5,size = 12, face = "bold"),
                plot.caption = element_text(face = "italic"),
-               ##plot.title = element_blank(),
                text = element_text(family = "Helvetica",face = "bold"),
                legend.position = c(0.05, 0.9))
     )
@@ -84,5 +89,5 @@ runUMAPremoval <- function(i,geneLists,seuData,fl) {
 
 upUMAP <- lapply(seq(length(up)), runUMAPremoval, up, seu, "up_genes")
 dwUMAP <- lapply(seq(length(dw)), runUMAPremoval, dw, seu, "dw_genes")
-ranUMAP <- lapply(seq(length(ran)), runUMAPremoval, ran, seu, "ran_genes")
+randomUMAP <- lapply(seq(length(ran)), runUMAPremoval, ran, seu, "ran_genes")
 allUMAP <- lapply(seq(length(all)), runUMAPremoval, all, seu, "all_DEGs")
