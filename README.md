@@ -11,11 +11,11 @@ We used bulk RNA-sequencing in the hippocampus and the striatum to show that a s
 
 - `1_runAlignment.sh`: align .fastq files to mouse genome (mm10, Ensembl 93) with STAR. This script is specifically used to run alignments on a cluster using a slurm workload manager.
 
-- `2_CountGenes.R`: Count number of reads aligning to exonic regions. 
+- `2_CountGenes.R`: count number of reads aligning to exonic regions. 
 
-- `3_DEanalysis.R`: Run the Differential Expression (DE) analysis usinge DEseq2.
+- `3_DEanalysis.R`: run the Differential Expression (DE) analysis usinge DEseq2.
 
-- `4_TrajectoryAnalysis.R`: Cluster genes based on their log2FC values in each group compared to the baseline group (VEH-Context).
+- `4_TrajectoryAnalysis.R`: cluster genes based on their log2FC values in each group compared to the baseline group (VEH-Context).
 
 
 ### snRNA-seq analysis
@@ -23,13 +23,13 @@ We used snRNA-sequencing in the hippocampus to show that systemic HDACi treatmen
 
 - `1_runAlignment.sh`: align fastq files to mouse genome (mm10-premrna; created with `cellranger mkfastq`) using CellRanger.
 
-- `2_SeuratAnalysis.R`: 
+- `2_SeuratAnalysis.R`: remove doublets, filter nuclei and normalize nuclear gene counts for downstream UMAP clustering with Seurat. After clustering, assign clusters to cell types and locations within the nucleus. 
 
-- `3_DEanalysis.R`:
+- `3_DEanalysis.R`: differential expression analysis (logistic framework) between HDACi and Vehicle treatments paired with contextual fear conditioning for each cell type. 
 
-- `4_Augur_cellComposition.R`:
+- `4_Augur_cellComposition.R`: determine cell type perturbation prioritization (not biased by nuclear numbers) and cell number changes after HDACi treatment.
 
-- `5_DEG_removal_test.R`: 
+- `5_DEG_removal_test.R`: analysis associated with Figures 3E-F and Supplemental Figure 8 in the manuscript. Remove up and down-regulated genes (DEGs) in each cell type to determine whether or not DEGs are driving the HDACi mediated split of Excitatory Neurons of the DG.
 
 
 ### ChIP-seq analysis
