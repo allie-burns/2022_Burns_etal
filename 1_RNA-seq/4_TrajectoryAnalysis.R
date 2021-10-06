@@ -1,15 +1,26 @@
+## ##############################################################################
+## Date:        March 2021
+## Author:      Allison M. Burns
+## Filename:    /1_RNA-seq/4_TrajectoryAnalysis.R
+## Project:     Epigenetic Priming - RNA-seq analysis
+## Description: Using the DESeq analysis output (from 3_DEanalysis.R) assign
+##              genes to trajectory clusters based on significant log2FC (group
+##              vs Veh-Context (VC)) and their relative differences (between
+##              neighboring groups.
+## ##############################################################################
+
 library(DESeq2)
 
 ## Download DE results
-BR  <- "hpp"
-results <- readRDS(paste("./data/DE_conditioning/DEseq2",BR,"VCcontrol.rds",sep = "_"))
+BR  <- "hpp" ## "str"
+results <- readRDS(paste("./files/DEseq2_",BR,".rds",sep = ""))
 results <- results[1:3] ## remove HDACi comparison
 names(results) <- c("VS","HC","HS")
 
-################################################################################
+#################################################################################
 ## Set up FC information
-################################################################################
-## Get combined of all genes across all comparisons
+#################################################################################
+## Combine  all genes across all comparisons
 gns <- unlist(lapply(results,rownames))
 gns <- unique(gns)
 
@@ -21,7 +32,7 @@ results <- lapply(results, function(x) {
 })
 
 ##build dataframe
-##set all insig values to 0 (appear as grey in heatmap)
+##set all insig values to 0
 log2FC <- lapply(results, function(x) {
     FC <- x$log2FoldChange
     names(FC)  <-  rownames(x)
@@ -41,8 +52,9 @@ FC <- do.call(cbind,log2FC)
 clustFC <- data.frame(FC)
 clustFC$gene <- rownames(clustFC)
 
-d = 0.2
+d = 0.2 ## Set difference between groups
 
+## Run Decission Tree (assigning groups)
 clusters <- lapply(seq(1:nrow(clustFC)), function(i) {
     VC  <-  clustFC[i,1]
     VS  <-  clustFC[i,2]
@@ -134,5 +146,5 @@ clustFC$cluster <- unlist(clusters)
 
 
 saveRDS(object = clustFC,
-        file = paste("./data/DE_conditioning/clusterFC_",BR,".rds",sep = ""))
+        file = paste("./files/clusterFC_",BR,".rds",sep = ""))
 

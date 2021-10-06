@@ -1,28 +1,39 @@
 #!/bin/bash
 
-#SBATCH --job-name RNAseq_hdac
+## #############################################################################
+## Date:        February 2021
+## Author:      Allison M. Burns
+## Filename:    /1_RNA-seq/1_runAlignment.sh
+## Project:     Epigenetic Priming - RNA-seq analysis
+## Description: This script was used to align fastq files from the RNA-seq
+##              experiment to the mouse genome on the SLURM system.  This code
+##              creates the file system, runs the alignment and sorts and
+##              indexes the output bam files. 
+## #############################################################################
+
+## #############################################################################
+## Setup environment
+## #############################################################################
+#SBATCH --job-name RNAseq_align
 #SBATCH --nodes 1
 #SBATCH --cpus-per-task 34
 #SBATCH --mem 50G
 #SBATCH --time 48:00:00
-#SBATCH --mail-type=END
-#SBATCH --mail-user=allison.burns@epfl.ch
 
+## load modules
 module load gcc
 module load samtools
 
-##########################################################
-## STEP 1: SET UP FILE SYSTEM
-##########################################################
-# 1.1 Make output directory
+## #############################################################################
+## Setup File System
+## #############################################################################
+## Output directory
 if [ ! -d ./alignment ]; then
     mkdir ./alignment
 fi
 cd ./alignment
 
-## 1.2 Make downstream directories within output directory
 fileList=(STARalign STARbam)
-
 for f in ${fileList[@]}
 do
     if [ ! -d ./$f ]; then
@@ -30,9 +41,9 @@ do
     fi
 done
 
-##########################################################
-## STEP 2: RUN ALIGNMENTS
-##########################################################
+## #############################################################################
+## Run Alignment
+## #############################################################################
 samples=$(cat ../sampInfo.txt | cut -f 1)
 
 for samp in $samples ;
@@ -62,9 +73,9 @@ wait
 done
 
 
-##########################################################
-## STEP 3: sort and index bamfiles
-##########################################################
+## #############################################################################
+## Sort and index bam files
+## #############################################################################
 for samp in $samples ;
 do
     echo Processing: $fbname
@@ -73,14 +84,13 @@ do
     fbname=$(basename $samp .fastq.gz)
 
     ## Copy .bam files to STARbam
-    # mv ./STARalign/$fbname/${fbname}_Aligned.sortedByCoord.out.bam \
-    # 	./STARbam/
+    mv ./STARalign/$fbname/${fbname}_Aligned.sortedByCoord.out.bam \
+       ./STARbam/
 
     ## Sort and index bam files
     samtools sort -l 9 -o ./STARbam/${fbname}_sorted.bam \
 	./STARbam/${fbname}_Aligned.sortedByCoord.out.bam 
     samtools index ./STARbam/${fbname}_sorted.bam
-    ##rm ./STARbam/${fbname}_Aligned.out.bam 
 
 done
 
