@@ -6,23 +6,10 @@
 ## Filename:    /1_RNA-seq/1_runAlignment.sh
 ## Project:     Epigenetic Priming - RNA-seq analysis
 ## Description: This script was used to align fastq files from the RNA-seq
-##              experiment to the mouse genome on the SLURM system.  This code
-##              creates the file system, runs the alignment and sorts and
-##              indexes the output bam files. 
+##              experiment to the mouse genome.  This code creates the file
+##              system, runs the alignment and sorts and indexes the output
+##              bam files. 
 ## #############################################################################
-
-## #############################################################################
-## Setup environment
-## #############################################################################
-#SBATCH --job-name RNAseq_align
-#SBATCH --nodes 1
-#SBATCH --cpus-per-task 34
-#SBATCH --mem 50G
-#SBATCH --time 48:00:00
-
-## load modules
-module load gcc
-module load samtools
 
 ## #############################################################################
 ## Setup File System

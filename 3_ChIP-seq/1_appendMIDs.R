@@ -16,7 +16,7 @@ library(Biostrings)
 ## Setup environment
 ################################################################################
 ## Call get sample infor for alignment
-fastqdir <- "./raw_fastq"
+fastqdir <- "./0_raw_fastq"
 files <- list.files(fastqdir, pattern = "fastq.gz", full.names = TRUE)
 
 sample <- unique(substr(basename(files), 
@@ -63,7 +63,7 @@ appendFastQs <- function(sample,files) {
       r3 <- ShortReadQ(sread(r1.s), quality(r1.s), r1_new)
       ## write the new fastq files
       writeFastq(r3,
-                 paste("./fastq_append_MID/",sample,".fastq.gz", sep = ""),
+                 paste("./files/1_MIDappend_fastq/",sample,".fastq.gz", sep = ""),
                  "a")
     }
 }
@@ -73,7 +73,7 @@ lapply(sample, appendFastQs,files)
 ################################################################################
 ## Make adapter files for next step (trimming adapters)
 ################################################################################
-adapters <- read.delim("./trimAdapters/adapter_list.txt")
+adapters <- read.delim("./files/adapter_list.txt")
 
 lapply(seq(1:nrow(adapts)), function(i) {
     sample <- adapters[i,1]
@@ -81,6 +81,6 @@ lapply(seq(1:nrow(adapts)), function(i) {
     adapt <- DNAStringSet(x=adapt)
     names(adapt)  <-  sample
     writeXStringSet(adapt,
-                    paste("./trimAdapters/", sample, ".fasta",sep = ""),
+                    paste("./files/", sample, ".fasta",sep = ""),
                     format="fasta")
 })

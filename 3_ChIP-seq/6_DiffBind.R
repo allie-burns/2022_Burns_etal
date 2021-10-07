@@ -1,3 +1,14 @@
+## #############################################################################
+## Date:        December 2020
+## Author:      Allison M. Burns
+## Filename:    /3_ChIP-seq/DiffBind.R
+## Project:     Epigenetic Priming - ChIP-seq analysis
+## Description: Differential Expression Analysis using DiffBind for ChIP-seq
+##              peaks. This script takes a csv file (with pathways to peak and
+##              bam files - update if necessary) and creates a diffbind object
+##              that accounts for peak locations and reads within those peaks.   
+## #############################################################################
+
 library(DiffBind)
 library(rtracklayer)
 library(ggplot2)
@@ -25,15 +36,6 @@ db_obj <- dba.count(db_obj)
 plot(db_obj,
      main = "Affinity (read count) Correlation")
 dev.off()
-
-## Get normalized counts
-db_norm <- dba.contrast(db_obj)
-db_norm <- dba.analyze(db_norm, method=DBA_DESEQ2, bParallel = F, bFullLibrarySize = F)
-norm_counts <- dba.report(db_norm,
-                          th = 1,
-                          bCounts = T,
-                          DataType=DBA_DATA_FRAME,
-                            bNormalized = T)
 
 ## Set contrast
 db_obj <- dba.contrast(db_obj) ## 8 contrasts

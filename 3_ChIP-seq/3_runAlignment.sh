@@ -9,17 +9,6 @@
 ##              convert sam to bam files and sort bam files.
 ## #############################################################################
 
-#SBATCH --job-name ChIP-Align
-#SBATCH --nodes 1
-#SBATCH --cpus-per-task 24
-#SBATCH --mem 50G
-#SBATCH --time 72:00:00
-
-module load gcc
-module load bowtie2
-module load samtools 
-
-
 ## Get list of files
 path="."
 samples=$(ls $path/2_trimmed_fastq/*.fastq.gz | sed 's#.*/##' | rev | cut -c18- | rev)

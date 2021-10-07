@@ -1,2 +1,1 @@
 2_snRNA-seq/files/SeuratObject.rds filter=lfs diff=lfs merge=lfs -text
-*.iso filter=lfs diff=lfs merge=lfs -text

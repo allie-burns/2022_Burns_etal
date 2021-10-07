@@ -6,20 +6,11 @@
 ## Filename:    /3_ChIP-seq/2_trimAdapt.sh
 ## Project:     Epigenetic Priming - ChIP-seq analysis
 ## Description: Trim adapters (from library preparation) and output updated
-##              fastq files. This file is made to be run on a Slurm cluster.
+##              fastq files.
 ## #############################################################################
 
-#SBATCH -J cutAdapt
-#SBATCH --nodes 1-1
-#SBATCH --exclusive
-#SBATCH --mem 60000
-#SBATCH --time 48:00:00
-  
-module purge 
-module load trimmomatic
-
 ## Get list of files
-path="."
+path="./files"
 samples=$(ls $path/1_MIDappend_fastq/*.fastq.gz | sed 's#.*/##' | rev | cut -c10- | rev)
 
 for samp in $samples
@@ -31,7 +22,7 @@ do
     fastq=$(ls $path/1_MIDappend_fastq/*.fastq.gz | grep -e $samp ) 
 
     ## Get adapter fasta file
-    adapter_seq=$(ls $path/trimAdapters/*.fasta | grep -e $samp ) 
+    adapter_seq=$(ls $path/files/*.fasta | grep -e $samp ) 
 
     ## Run trimmomatic
     trimmomatic SE -phred33 \

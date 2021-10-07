@@ -1,3 +1,11 @@
+## #############################################################################
+## Date:        December 2020
+## Author:      Allison M. Burns
+## Filename:    /3_ChIP-seq/8_AssignPeaks.R
+## Project:     Epigenetic Priming - ChIP-seq analysis
+## Description: 
+## #############################################################################
+
 library(GenomicRanges)
 library(rtracklayer)
 library(dplyr)
