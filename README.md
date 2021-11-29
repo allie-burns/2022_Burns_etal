@@ -49,4 +49,4 @@ Based on the results from the snRNA-sequencing analysis, we performed ChIP-seque
 
 - `7_ChromHMM_Homer.sh`: Run chromHMM on bam files for multiple histone post-translational modifications (data coming from Halder et al. 2016 collected 1 hour after CFC). Run Homer `annotatePeaks.pl` to assign peaks to gene regions based on proximity. 
 
-- `8_AssignPeaks.R`: Assign the peaks that were defined in `6_DiffBind.R` to the chromatin states and genes defined in Homer (`7_ChromHmm_Homer.sh`) and check the assignment statistics.
+- `8_AssignPeaks.R`: Assign the peaks that were defined in `6_DiffBind.R` to the chromatin states and genes defined in `7_ChromHmm_Homer.sh` and check the assignment statistics.
