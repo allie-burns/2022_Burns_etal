@@ -3,9 +3,10 @@
 ## Author:      Allison M. Burns
 ## Filename:    /3_ChIP-seq/8_AssignPeaks.R
 ## Project:     Epigenetic Priming - ChIP-seq analysis
-## Description: 
+## Description: Assign the peaks that were defined in 6_DiffBind.R to the
+##              chromatin states and genes defined in Homer
+##              (7_ChromHmm_Homer.sh) and check the assignment statistics.
 ## #############################################################################
-
 library(GenomicRanges)
 library(rtracklayer)
 library(dplyr)

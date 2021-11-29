@@ -33,3 +33,20 @@ We used snRNA-sequencing in the hippocampus to show that systemic HDACi treatmen
 
 
 ### ChIP-seq analysis
+Based on the results from the snRNA-sequencing analysis, we performed ChIP-sequencing in Neun+ cells (neurons) of the dentate gyrus (DG). Animals underwent similar treatment and behavior as in the RNA-sequencign experiment (drug: Veh/HDACi; behavior: context/CFC) and an hour after behavior the DG of each animal was collected. Nuclei were extracted and Neun+ nuclei were sorted before being combined and IPed fo H3K27ac. Code for the analysis of the ChIP libraries should be run in the following order:
+
+- `1_appendMIDs.R`: Append MID information from Read_1 to Read_2 for removal of duplicates and build adapter  sequence files for adapter trimming (2_trimAdapt.sh).
+
+- `2_trimAdapt.sh`: Trim adapters (from library preparation) and output updated fastq files.
+
+- `3_runAlignment.sh`:  Align trimmed fastq files to mm10 genome with bowtie2 then convert sam to bam and sort bam files.
+
+- `4_filterBamFiles.sh`:  Call the perl script `4_rmDupByMids.pl` (provided by Active Motif) to remove duplicated reads based on MID sequences. Remove low mapping alignments (mapq <= 40) and re-index bam files.
+
+- `5_peakCalls.sh`: Run MACS2 for peak calling in broad peak mode. 
+
+- `6_DiffBind.R`: Differential Expression Analysis using DiffBind. Creates a diffbind object that accounts for peak locations and reads within those peaks.
+
+- `7_ChromHMM_Homer.sh`: Run chromHMM on bam files for multiple histone post-translational modifications (data coming from Halder et al. 2016 collected 1 hour after CFC). Run Homer `annotatePeaks.pl` to assign peaks to gene regions based on proximity. 
+
+- `8_AssignPeaks.R`: Assign the peaks that were defined in `6_DiffBind.R` to the chromatin states and genes defined in Homer (`7_ChromHmm_Homer.sh`) and check the assignment statistics.

@@ -1,7 +1,7 @@
 ## #############################################################################
 ## Date:        December 2020
 ## Author:      Allison M. Burns
-## Filename:    /3_ChIP-seq/DiffBind.R
+## Filename:    /3_ChIP-seq/6_DiffBind.R
 ## Project:     Epigenetic Priming - ChIP-seq analysis
 ## Description: Differential Expression Analysis using DiffBind for ChIP-seq
 ##              peaks. This script takes a csv file (with pathways to peak and
