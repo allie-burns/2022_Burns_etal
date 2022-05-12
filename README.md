@@ -1,3 +1,5 @@
+<a href="https://zenodo.org/badge/latestdoi/402792893"><img src="https://zenodo.org/badge/402792893.svg" alt="DOI"></a>
+
 # The HDAC inhibitor CI-994 acts as a molecular memory aid by facilitating synaptic and intra-cellular communication after learning
 Here is the code used to perform the analyses presented in the manuscript, "The HDAC inhibitor CI-1 994 acts as a molecular memory aid by facilitating synaptic and intra-cellular communication after learning" [(Burns et al., 2021, BioRxiv)](https://www.biorxiv.org/content/10.1101/2021.09.21.460970v1). 
 
